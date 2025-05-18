@@ -2,8 +2,8 @@
   <defs>
     <!-- menu -->
     <symbol id="menu" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-      <path d="M3 12h18"/>
       <path d="M3 6h18"/>
+      <path d="M3 12h18"/>
       <path d="M3 18h18"/>
     </symbol>
 
@@ -14,7 +14,7 @@
     </symbol>
 
     <!-- search -->
-    <symbol id="search" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+    <symbol id="search" viewBox="0 1 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
       <path d="M11 17.25a6.25 6.25 0 110-12.5 6.25 6.25 0 010 12.5z"/>
       <path d="M16 16l4.5 4.5"/>
     </symbol>
@@ -92,6 +92,26 @@
     <!-- copy-filled -->
     <symbol id="copy-filled" viewBox="0 0 448 512">
       <path d="M192 384h192c35 0 64-29 64-64V116c0-13-5-25-14-34l-68-68c-9-9-21-14-34-14H192c-35 0-64 29-64 64v256c0 35 29 64 64 64ZM64 128c-35 0-64 29-64 64v256c0 35 29 64 64 64h192c35 0 64-29 64-64v-32h-48v32c0 9-7 16-16 16H64c-9 0-16-7-16-16V192c0-9 7-16 16-16h32v-48H64Z"/>
+    </symbol>
+
+    <!-- sort-descending -->
+    <symbol id="sort-descending" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+      <path d="M 13 6 h 8"/>
+      <path d="M 13 10 h 6"/>
+      <path d="M 13 14 h 4"/>
+      <path d="M 13 18 h 2"/>
+      <path d="M 6 6 v 13"/>
+      <path d="M 3 16 l 3 3 l 3 -3"/>
+    </symbol>
+
+    <!-- sort-ascending -->
+    <symbol id="sort-ascending" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+      <path d="M 13 6 h 2"/>
+      <path d="M 13 10 h 4"/>
+      <path d="M 13 14 h 6"/>
+      <path d="M 13 18 h 8"/>
+      <path d="M 6 5 v 13"/>
+      <path d="M 3 8 l 3 -3 l 3 3"/>
     </symbol>
   </defs>
 </svg>
