@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
+import CodeSnippet from "@components/CodeSnippet.astro";
 
 type Props = {
   entry: CollectionEntry<"blog"> | CollectionEntry<"projects">;
@@ -21,7 +22,11 @@ const next = items[(index + 1) % items.length];
 
 <div>
   <article>
-    <Content />
+    <Content
+      components={{
+        pre: CodeSnippet,
+      }}
+    />
   </article>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <a

@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --copy-btn-margin: 10px;
-}
 
 @layer base {
   @font-face {
@@ -123,6 +120,13 @@ article img {
   /* defined in tailwind.config */
 }
 
+html.dark .astro-code,
+html.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
 
 /**
  * Meteors
@@ -156,19 +160,3 @@ article img {
 
 #meteors .shower.ul {
   @apply rotate-315;
-}
-
-.copy-cnt {
-  @apply absolute w-full;
-  top: var(--copy-btn-margin);
-}
-
-.copy-btn {
-  @apply w-[30px] fixed;
-  left: calc(100% - var(--copy-btn-margin));
-  transform: translateX(-100%);
-}
-
-.copy-svg {
-  @apply w-full aspect-square text-white opacity-70 hover:opacity-90;
-}
