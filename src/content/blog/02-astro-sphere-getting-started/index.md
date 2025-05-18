@@ -7,7 +7,6 @@ tags:
 - Tutorial
 - Astro
 - Astro Sphere
-- A really long tag that is probably going to overflow
 ---
 
 Astro Sphere is designed to be configurable. This article will cover the basics on
