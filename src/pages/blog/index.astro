@@ -10,9 +10,16 @@ const posts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort(
-  (a, b) => a.localeCompare(b),
-);
+const tagCounts = posts
+  .flatMap((post) => post.data.tags)
+  .reduce((acc: Record<string, number>, tag: string) => {
+    acc[tag] = (acc[tag] || 0) + 1;
+    return acc;
+  }, {});
+
+const sortedTags = Object.entries(tagCounts)
+  .sort(([, countA], [, countB]) => countB - countA)
+  .map(([tag, count]) => ({ tag, count }));
 
 const estimated_initial_size =
   28 + posts.length * 158 + (posts.length - 1) * 12;
@@ -38,7 +45,7 @@ const estimated_initial_size =
       <SearchCollection
         client:load
         entry_name={"posts"}
-        tags={tags}
+        tags={sortedTags}
         data={posts}
       />
     </div>

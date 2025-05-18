@@ -7,7 +7,7 @@ import SearchBar from "@components/SearchBar"
 
 type Props = {
   entry_name: string
-  tags: string[]
+  tags: { tag: string, count: number }[]
   data: CollectionEntry<"blog">[] | CollectionEntry<'projects'>[]
 }
 
@@ -77,7 +77,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
           {/* Search Bar */}
           <SearchBar onSearchInput={onSearchInput} query={query} setQuery={setQuery} placeholderText={`Search ${entry_name}`} />
           {/* Tag Filters */}
-          <div class="relative flex flex-row justify-between w-full"><p class="text-sm font-semibold uppercase my-4 text-black dark:text-white">Tags</p>
+          <div class="relative flex flex-row justify-between w-full"><span class="text-sm font-semibold uppercase my-4 text-black dark:text-white">Tags</span>
             {filter().size > 0 && (
               <button
                 onClick={clearFilters}
@@ -91,37 +91,40 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
           <ul class="flex flex-wrap sm:flex-col gap-1.5">
             <For each={tags}>
               {(tag) => (
-                <li class="md:w-full">
+                <li class="sm:w-full">
                   <button
-                    onClick={() => toggleTag(tag)}
+                    onClick={() => toggleTag(tag.tag)}
                     class={cn(
                       "w-full px-2 py-1 rounded",
                       "flex gap-2 items-center",
                       "bg-black/5 dark:bg-white/10",
                       "hover:bg-black/10 hover:dark:bg-white/15",
                       "transition-colors duration-300 ease-in-out",
-                      filter().has(tag) && "text-black dark:text-white"
+                      filter().has(tag.tag) && "text-black dark:text-white"
                     )}
                   >
                     <svg
                       class={cn(
                         "shrink-0 size-5 fill-black/50 dark:fill-white/50",
                         "transition-colors duration-300 ease-in-out",
-                        filter().has(tag) && "fill-black dark:fill-white"
+                        filter().has(tag.tag) && "fill-black dark:fill-white"
                       )}
                     >
                       <use
                         href={`/ui.svg#square`}
-                        class={cn(!filter().has(tag) ? "block" : "hidden")}
+                        class={cn(!filter().has(tag.tag) ? "block" : "hidden")}
                       />
                       <use
                         href={`/ui.svg#square-check`}
-                        class={cn(filter().has(tag) ? "block" : "hidden")}
+                        class={cn(filter().has(tag.tag) ? "block" : "hidden")}
                       />
                     </svg>
 
                     <span class="truncate block min-w-0 pt-[2px]">
-                      {tag}
+                      {tag.tag}
+                    </span>
+                    <span class="pt-[2px]">
+                      {tag.count}
                     </span>
                   </button>
 

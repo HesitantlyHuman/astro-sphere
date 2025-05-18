@@ -7,6 +7,7 @@ tags:
 - Tutorial
 - Astro
 - Astro Sphere
+- A really long tag that is probably going to overflow
 ---
 
 Astro Sphere is designed to be configurable. This article will cover the basics on
@@ -82,9 +83,9 @@ export const SOCIALS: Socials = [
 ]
 ```
 
-| Field | Type | Required | Description |
-| :---- | :--- | :------- | :---------- |
-| NAME  | string | yes | Accessible name |
-| ICON  | string | yes | Refers to the symbol id in `public/social.svg` |
-| TEXT  | string | yes | Shorthand profile name |
-| HREF  | string | yes | The link to the social media profile |
+| Field | Type   | Required | Description                                    |
+| :---- | :----- | :------- | :--------------------------------------------- |
+| NAME  | string | yes      | Accessible name                                |
+| ICON  | string | yes      | Refers to the symbol id in `public/social.svg` |
+| TEXT  | string | yes      | Shorthand profile name                         |
+| HREF  | string | yes      | The link to the social media profile           |
