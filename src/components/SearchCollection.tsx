@@ -96,38 +96,40 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
                     onClick={() => toggleTag(tag.tag)}
                     class={cn(
                       "w-full px-2 py-1 rounded",
-                      "flex gap-2 items-center",
+                      "flex gap-2 items-center justify-between",
                       "bg-black/5 dark:bg-white/10",
                       "hover:bg-black/10 hover:dark:bg-white/15",
                       "transition-colors duration-300 ease-in-out",
                       filter().has(tag.tag) && "text-black dark:text-white"
                     )}
                   >
-                    <svg
-                      class={cn(
-                        "shrink-0 size-5 fill-black/50 dark:fill-white/50",
-                        "transition-colors duration-300 ease-in-out",
-                        filter().has(tag.tag) && "fill-black dark:fill-white"
-                      )}
-                    >
-                      <use
-                        href={`/ui.svg#square`}
-                        class={cn(!filter().has(tag.tag) ? "block" : "hidden")}
-                      />
-                      <use
-                        href={`/ui.svg#square-check`}
-                        class={cn(filter().has(tag.tag) ? "block" : "hidden")}
-                      />
-                    </svg>
+                    <div class="flex gap-3 min-w-0 items-center">
+                      <svg
+                        class={cn(
+                          "shrink-0 size-5 fill-black/50 dark:fill-white/50",
+                          "transition-colors duration-300 ease-in-out",
+                          filter().has(tag.tag) && "fill-black dark:fill-white"
+                        )}
+                      >
+                        <use
+                          href={`/ui.svg#square`}
+                          class={cn(!filter().has(tag.tag) ? "block" : "hidden")}
+                        />
+                        <use
+                          href={`/ui.svg#square-check`}
+                          class={cn(filter().has(tag.tag) ? "block" : "hidden")}
+                        />
+                      </svg>
 
-                    <span class="truncate block min-w-0 pt-[2px]">
-                      {tag.tag}
-                    </span>
-                    <span class="pt-[2px]">
+                      <span class="truncate block min-w-0 pt-[2px]">
+                        {tag.tag}
+                      </span>
+                    </div>
+
+                    <span class="pt-[2px] min-w-4 text-black/40 dark:text-white/40">
                       {tag.count}
                     </span>
                   </button>
-
                 </li>
               )}
             </For>
