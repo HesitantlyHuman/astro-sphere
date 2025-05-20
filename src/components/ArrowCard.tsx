@@ -36,7 +36,7 @@ export default function ArrowCard({ entry, pill }: Props) {
         </ul>
       </div>
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white">
-        <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-transform duration-300 ease-in-out" />
+        <path d="M5 12 h12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-transform duration-300 ease-in-out" />
         <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-transform duration-300 ease-in-out" />
       </svg>
     </a>

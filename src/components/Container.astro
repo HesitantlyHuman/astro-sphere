@@ -1,21 +1,25 @@
 ---
-import { cn } from "@lib/utils"
+import { cn } from "@lib/utils";
 
 type Props = {
-  size: "sm" | "md" | "lg" | "xl" | "2xl" | "5xl"
-}
+  size: "sm" | "md" | "lg" | "xl" | "2xl" | "5xl" | "6xl" | "7xl";
+};
 
 const { size } = Astro.props;
 ---
 
-<div class={cn(
-  "w-full h-full mx-auto px-5",
-  size === "sm" && "max-w-screen-sm",
-  size === "md" && "max-w-screen-md",
-  size === "lg" && "max-w-screen-lg",
-  size === "xl" && "max-w-screen-xl",
-  size === "2xl" && "max-w-screen-2xl",
-  size === "5xl" && "max-w-screen-5xl",
-)}>
-  <slot/>
+<div
+  class={cn(
+    "w-full h-full mx-auto px-5 md:px-24",
+    size === "sm" && "max-w-sm",
+    size === "md" && "max-w-md",
+    size === "lg" && "max-w-lg",
+    size === "xl" && "max-w-xl",
+    size === "2xl" && "max-w-2xl",
+    size === "5xl" && "max-w-5xl",
+    size === "6xl" && "max-w-6xl",
+    size === "7xl" && "max-w-7xl",
+  )}
+>
+  <slot />
 </div>

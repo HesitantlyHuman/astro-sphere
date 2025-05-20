@@ -9,6 +9,8 @@ import rehypeKatex from "rehype-katex"
 
 import { transformerMetaHighlight } from '@shikijs/transformers';
 
+const repo = "https://github.com/HesitantlyHuman/astro-sphere";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://hesitantlyhuman.github.io",
@@ -32,5 +34,10 @@ export default defineConfig({
     },
     remarkPlugins: [remarkMath, sectionize],
     rehypePlugins: [rehypeKatex]
+  },
+  vite: {
+    define: {
+      'import.meta.env.PUBLIC_GITHUB_REPO': JSON.stringify(repo),
+    }
   }
 });

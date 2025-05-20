@@ -44,7 +44,9 @@ const next = items[(index + 1) % items.length];
     )
   }
 </div>
-<PreviousNextButtons prev={prev} next={next} />
+<div class="animate">
+  <PreviousNextButtons prev={prev} next={next} />
+</div>
 
 <style>
   :global(article > :first-child > :first-child) {
