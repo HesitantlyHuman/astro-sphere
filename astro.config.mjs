@@ -9,7 +9,8 @@ import { transformerMetaHighlight } from '@shikijs/transformers';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://hesitantlyhuman.github.io/astro-sphere",
+  site: "https://hesitantlyhuman.github.io",
+  base: "/astro-sphere",
   integrations: [sitemap(), solidJs(), tailwind({ applyBaseStyles: false }), mdx()],
   markdown: {
     shikiConfig: {

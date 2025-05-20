@@ -29,11 +29,11 @@ import Container from "@components/Container.astro";
                 y1="12"
                 x2="5"
                 y2="12"
-                class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"
+                class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-transform duration-300 ease-in-out"
               ></line>
               <polyline
                 points="12 19 5 12 12 5"
-                class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"
+                class="translate-x-1 group-hover:translate-x-0 transition-transform duration-300 ease-in-out"
               ></polyline>
             </svg>
             <div
@@ -53,11 +53,11 @@ import Container from "@components/Container.astro";
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="flex flex-col items-center sm:items-start">
             <a
-              href="/"
+              href=`${import.meta.env.BASE_URL}/`
               class="flex gap-1 w-fit font-semibold text-current hover:text-black dark:hover:text-white"
             >
               <svg class="size-6 fill-current">
-                <use href="/brand.svg#brand"></use>
+                <use href=`${import.meta.env.BASE_URL}/brand.svg#brand`></use>
               </svg>
               {SITE.TITLE}
             </a>
@@ -87,13 +87,13 @@ import Container from "@components/Container.astro";
           >
             <div class="legal">
               <a
-                href="/legal/terms"
+                href=`${import.meta.env.BASE_URL}/legal/terms`
                 class="text-current hover:text-black dark:hover:text-white"
               >
                 Terms
               </a> |
               <a
-                href="/legal/privacy"
+                href=`${import.meta.env.BASE_URL}/legal/privacy`
                 class="text-current hover:text-black dark:hover:text-white"
               >
                 Privacy
@@ -113,7 +113,9 @@ import Container from "@components/Container.astro";
                     class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 "
                   >
                     <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white">
-                      <use href={`/social.svg#${SOCIAL.ICON}`} />
+                      <use
+                        href={`${import.meta.env.BASE_URL}/social.svg#${SOCIAL.ICON}`}
+                      />
                     </svg>
                   </a>
                 ))

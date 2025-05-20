@@ -13,11 +13,11 @@ import Container from "@components/Container.astro";
         class="absolute left-0 top-1/2 -translate-y-1/2 flex gap-1 font-semibold"
       >
         <a
-          href="/"
+          href=`${import.meta.env.BASE_URL}/`
           class="flex gap-1 text-current hover:text-black dark:hover:text-white"
         >
           <svg class="size-6 fill-current">
-            <use href="/brand.svg#brand"></use>
+            <use href=`${import.meta.env.BASE_URL}/brand.svg#brand`></use>
           </svg>
           <div>
             {SITE.TITLE}
@@ -30,7 +30,7 @@ import Container from "@components/Container.astro";
           {
             LINKS.map((LINK) => (
               <a
-                href={LINK.HREF}
+                href={`${import.meta.env.BASE_URL}${LINK.HREF}`}
                 class={cn(
                   "h-8 rounded-full px-3 text-current",
                   "flex items-center justify-center",
@@ -48,7 +48,7 @@ import Container from "@components/Container.astro";
 
       <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1">
         <a
-          href="/search"
+          href=`${import.meta.env.BASE_URL}/search`
           aria-label={`Search blog posts and projects on ${SITE.TITLE}`}
           class={cn(
             "hidden md:flex",
@@ -62,12 +62,12 @@ import Container from "@components/Container.astro";
           )}
         >
           <svg class="size-full">
-            <use href="/ui.svg#search"></use>
+            <use href=`${import.meta.env.BASE_URL}/ui.svg#search`></use>
           </svg>
         </a>
 
         <a
-          href="/rss.xml"
+          href=`${import.meta.env.BASE_URL}/rss.xml`
           target="_blank"
           aria-label={`Rss feed for ${SITE.TITLE}`}
           class={cn(
@@ -79,7 +79,7 @@ import Container from "@components/Container.astro";
           )}
         >
           <svg class="size-full">
-            <use href="/ui.svg#rss"></use>
+            <use href=`${import.meta.env.BASE_URL}/ui.svg#rss`></use>
           </svg>
         </a>
 
@@ -95,10 +95,10 @@ import Container from "@components/Container.astro";
           )}
         >
           <svg class="size-full block dark:hidden">
-            <use href="/ui.svg#sun"></use>
+            <use href=`${import.meta.env.BASE_URL}/ui.svg#sun`></use>
           </svg>
           <svg class="size-full hidden dark:block">
-            <use href="/ui.svg#moon"></use>
+            <use href=`${import.meta.env.BASE_URL}/ui.svg#moon`></use>
           </svg>
         </button>
 
@@ -111,14 +111,13 @@ import Container from "@components/Container.astro";
             "bg-transparent hover:bg-black/5 dark:hover:bg-white/20",
             "stroke-current hover:stroke-black hover:dark:stroke-white",
             "border border-black/10 dark:border-white/25",
-            "transition-colors duration-300 ease-in-out",
           )}
         >
           <svg id="drawer-open" class="size-full">
-            <use href="/ui.svg#menu"></use>
+            <use href=`${import.meta.env.BASE_URL}/ui.svg#menu`></use>
           </svg>
           <svg id="drawer-close" class="size-full">
-            <use href="/ui.svg#x"></use>
+            <use href=`${import.meta.env.BASE_URL}/ui.svg#x`></use>
           </svg>
         </button>
       </div>

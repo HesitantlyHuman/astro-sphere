@@ -84,7 +84,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
                 class="absolute flex justify-center items-center h-full w-10 right-0 top-0 stroke-neutral-400 dark:stroke-neutral-500 hover:stroke-neutral-600 hover:dark:stroke-neutral-300"
               >
                 <svg class="size-5">
-                  <use href={`/ui.svg#x`} />
+                  <use href={`${import.meta.env.BASE_URL}/ui.svg#x`} />
                 </svg>
               </button>
             )}</div>
@@ -110,11 +110,11 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
                       )}
                     >
                       <use
-                        href={`/ui.svg#square`}
+                        href={`${import.meta.env.BASE_URL}/ui.svg#square`}
                         class={cn(!filter().has(tag) ? "block" : "hidden")}
                       />
                       <use
-                        href={`/ui.svg#square-check`}
+                        href={`${import.meta.env.BASE_URL}/ui.svg#square-check`}
                         class={cn(filter().has(tag) ? "block" : "hidden")}
                       />
                     </svg>
@@ -145,8 +145,8 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
               <svg
                 class="size-5 left-2 top-[0.45rem]"
               >
-                <use href={`/ui.svg#sort-descending`} class={descending() ? "block" : "hidden"}></use>
-                <use href={`/ui.svg#sort-ascending`} class={descending() ? "hidden" : "block"}></use>
+                <use href={`${import.meta.env.BASE_URL}/ui.svg#sort-descending`} class={descending() ? "block" : "hidden"}></use>
+                <use href={`${import.meta.env.BASE_URL}/ui.svg#sort-ascending`} class={descending() ? "hidden" : "block"}></use>
               </svg>
             </button>
           </div>
