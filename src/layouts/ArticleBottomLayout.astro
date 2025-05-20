@@ -23,37 +23,35 @@ const prev = items[(index - 1 + items.length) % items.length];
 const next = items[(index + 1) % items.length];
 ---
 
-<div class="w-full overflow-hidden">
-  <div class="animate flex mx-auto gap-12 items-start">
-    <article
-      id="main-article"
-      class:list={[
-        "max-w-full",
-        "w-full",
-        headings.length > 0 ? "lg:max-w-2xl" : "",
-      ]}
-    >
-      <Content
-        components={{
-          pre: CodeSnippet,
-        }}
-      />
-    </article>
-    {
-      headings.length > 0 && (
-        <TableOfContents headings={headings} nav_depth={entry.data.nav_depth} />
-      )
-    }
-  </div>
-  <PreviousNextButtons prev={prev} next={next} />
-
-  <style>
-    :global(article > section:first-of-type > :first-child) {
-      margin-top: 0;
-    }
-
-    :global(article > section:last-of-type > :last-child) {
-      margin-bottom: 0;
-    }
-  </style>
+<div class="animate flex mx-auto gap-12 items-start">
+  <article
+    id="main-article"
+    class:list={[
+      "max-w-full",
+      "w-full",
+      headings.length > 0 ? "lg:max-w-2xl" : "",
+    ]}
+  >
+    <Content
+      components={{
+        pre: CodeSnippet,
+      }}
+    />
+  </article>
+  {
+    headings.length > 0 && (
+      <TableOfContents headings={headings} nav_depth={entry.data.nav_depth} />
+    )
+  }
 </div>
+<PreviousNextButtons prev={prev} next={next} />
+
+<style>
+  :global(article > section:first-of-type > :first-child) {
+    margin-top: 0;
+  }
+
+  :global(article > section:last-of-type > :last-child) {
+    margin-bottom: 0;
+  }
+</style>
