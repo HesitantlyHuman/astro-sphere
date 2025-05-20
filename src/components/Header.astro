@@ -4,6 +4,9 @@ import { cn } from "@lib/utils";
 const { pathname } = Astro.url;
 const subpath = pathname.match(/[^/]+/g);
 import Container from "@components/Container.astro";
+
+console.log(pathname);
+console.log(subpath);
 ---
 
 <header id="header" class="fixed top-0 w-full h-16 z-50">
@@ -34,7 +37,8 @@ import Container from "@components/Container.astro";
                 class={cn(
                   "h-8 rounded-full px-3 text-current",
                   "flex items-center justify-center",
-                  pathname === LINK.HREF || "/" + subpath?.[0] === LINK.HREF
+                  "/" + subpath?.[0] === LINK.HREF ||
+                    "/" + subpath?.[1] === LINK.HREF
                     ? "bg-black dark:bg-white text-white dark:text-black"
                     : "hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white",
                 )}
@@ -56,7 +60,7 @@ import Container from "@components/Container.astro";
             "bg-transparent hover:bg-black/5 dark:hover:bg-white/20",
             "stroke-current hover:stroke-black hover:dark:stroke-white",
             "border border-black/10 dark:border-white/25",
-            pathname === "/search" || "/" + subpath?.[0] === "/search"
+            subpath?.[0] === "search" || subpath?.[1] === "search"
               ? "pointer-events-none bg-black dark:bg-white text-white dark:text-black"
               : "",
           )}
