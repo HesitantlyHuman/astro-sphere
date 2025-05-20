@@ -4,6 +4,8 @@ import sitemap from "@astrojs/sitemap"
 import tailwind from "@astrojs/tailwind"
 import solidJs from "@astrojs/solid-js"
 import sectionize from "remark-sectionize"
+import remarkMath from "remark-math"
+import rehypeKatex from "rehype-katex"
 
 import { transformerMetaHighlight } from '@shikijs/transformers';
 
@@ -28,6 +30,7 @@ export default defineConfig({
         dark: "dark-plus",
       }
     },
-    remarkPlugins: [sectionize],
+    remarkPlugins: [remarkMath, sectionize],
+    rehypePlugins: [rehypeKatex]
   }
 });
