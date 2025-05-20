@@ -1,0 +1,19 @@
+---
+import ArticleTopLayout from "@layouts/ArticleTopLayout.astro";
+import ArticleBottomLayout from "@layouts/ArticleBottomLayout.astro";
+import TopLayout from "@layouts/TopLayout.astro";
+import BottomLayout from "@layouts/BottomLayout.astro";
+
+const { entry } = Astro.props;
+---
+
+<TopLayout>
+  <div class="animate">
+    <ArticleTopLayout entry={entry} />
+  </div>
+</TopLayout>
+<BottomLayout>
+  <div class="animate">
+    <ArticleBottomLayout entry={entry} />
+  </div>
+</BottomLayout>

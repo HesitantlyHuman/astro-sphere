@@ -46,7 +46,7 @@ body {
 }
 
 main {
-  @apply flex flex-col flex-1 bg-white dark:bg-black;
+  @apply bg-white dark:bg-black;
 }
 
 header {
@@ -160,4 +160,8 @@ html.dark .astro-code span {
 
 #meteors .shower.ul {
   @apply rotate-315;
+}
+
+[id] {
+  @apply scroll-mt-24;
 }

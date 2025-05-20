@@ -1,0 +1,298 @@
+---
+import TableOfContentsHeading from "./TableOfContentsHeading.astro";
+
+type HeadingSlug = {
+  depth: number;
+  slug: string;
+  text: string;
+};
+
+type Heading = {
+  slug: string;
+  text: string;
+  children: Heading[];
+};
+
+type Props = {
+  headings: HeadingSlug[];
+  nav_depth?: number;
+};
+
+const { headings, nav_depth = 3 } = Astro.props;
+const toc = collect_headings(headings, nav_depth, 4);
+
+function collect_headings(
+  heading_slugs: HeadingSlug[],
+  max_nesting: number,
+  max_depth: number,
+): Heading[] {
+  heading_slugs = heading_slugs.filter(({ depth }) => depth <= max_depth);
+  const headings: Heading[] = [];
+  const stack: { node: Heading; depth: number; nesting: number }[] = [];
+
+  for (const heading_slug of heading_slugs) {
+    const heading: Heading = {
+      slug: heading_slug.slug,
+      text: heading_slug.text,
+      children: [],
+    };
+
+    // Remove nodes from stack that are deeper or same level
+    while (
+      stack.length > 0 &&
+      heading_slug.depth <= stack[stack.length - 1].depth
+    ) {
+      stack.pop();
+    }
+
+    const current_nesting = stack.length;
+
+    if (current_nesting >= max_nesting) {
+      // Skip this heading completely
+      continue;
+    }
+
+    if (stack.length === 0) {
+      headings.push(heading);
+    } else {
+      const parent = stack[stack.length - 1].node;
+      parent.children.push(heading);
+    }
+
+    stack.push({
+      node: heading,
+      depth: heading_slug.depth,
+      nesting: current_nesting + 1,
+    });
+  }
+
+  return headings;
+}
+---
+
+<div class="sticky top-24 pl-4 pb-12 md:hidden lg:block max-w-[25%]">
+  <div
+    id="toc-fade-top"
+    class="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white dark:from-black to-transparent opacity-0 transition-opacity duration-[0.15s] z-40"
+  >
+  </div>
+  <div
+    class="toc-container w-full max-h-[88vh] overflow-hidden hover:overflow-y-auto lg:block scroll-smooth"
+  >
+    <nav class="toc relative p-1 h-fit z-0">
+      <ul class="grid">
+        {toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
+      </ul>
+      <svg
+        class="h-full absolute inset-0 pointer-events-none w-full"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          class="text-primary duration-150 stroke-current toc-marker transition-all"
+          fill="none"
+          stroke-dasharray="1 0 0 5000"
+          stroke-dashoffset="1"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+        </path>
+      </svg>
+    </nav>
+  </div>
+  <div
+    id="toc-fade-bottom"
+    class="pointer-events-none absolute inset-x-0 bottom-12 h-12 bg-gradient-to-t from-white dark:from-black to-transparent opacity-0 transition-opacity duration-[0.15s] z-40"
+  >
+  </div>
+</div>
+
+<script>
+  const toc_container = document.querySelector(".toc-container") as HTMLElement;
+  const fadeTop = document.getElementById("toc-fade-top");
+  const fadeBottom = document.getElementById("toc-fade-bottom");
+
+  function updateFades() {
+    if (toc_container === null) return;
+    const { scrollTop, scrollHeight, clientHeight } = toc_container;
+
+    // Show top fade if scrolled down past the top
+    if (fadeTop !== null) {
+      if (scrollTop > 10) {
+        fadeTop.classList.replace("opacity-0", "opacity-100");
+      } else {
+        fadeTop.classList.replace("opacity-100", "opacity-0");
+      }
+    }
+
+    // Show bottom fade if not yet scrolled to the bottom
+    if (fadeBottom !== null) {
+      if (scrollTop + clientHeight < scrollHeight - 10) {
+        fadeBottom.classList.replace("opacity-0", "opacity-100");
+      } else {
+        fadeBottom.classList.replace("opacity-100", "opacity-0");
+      }
+    }
+  }
+
+  // Initialize on load and update on scroll
+  window.addEventListener("load", updateFades);
+  if (toc_container !== null)
+    toc_container.addEventListener("scroll", updateFades);
+
+  // Create some WeakMaps to store the distances to the top and
+  // bottom of each link
+  const linkStarts = new WeakMap();
+  const linkEnds = new WeakMap();
+
+  function drawPath() {
+    const path = document.querySelector(
+      "path.toc-marker",
+    ) as SVGPathElement | null;
+    if (!path) return;
+
+    const links = Array.from(document.querySelectorAll("nav.toc a")).map(
+      (element) => element as HTMLElement,
+    );
+    if (!links.length) return;
+
+    let pathData = [];
+    let left = 0;
+    links.forEach((link, i) => {
+      const x = link.offsetLeft;
+      const y = link.offsetTop;
+      const height = link.offsetHeight;
+      if (i === 0) {
+        // The top of the first link starts at 0px along the path.
+        linkStarts.set(link, 0);
+        pathData.push("M", x, y, "L", x, y + height);
+      } else {
+        if (left !== x) pathData.push("L", left, y);
+        pathData.push("L", x, y);
+
+        // Apply the current path data to the path element
+        path.setAttribute("d", pathData.join(" "));
+
+        // Get the total length of the path now that it extends
+        // to the top of this link, and store it in our linkStarts
+        // WeakMap.
+        linkStarts.set(link, path.getTotalLength());
+        pathData.push("L", x, y + height);
+      }
+      left = x;
+
+      // Apply the current path data to the path element again
+      path.setAttribute("d", pathData.join(" "));
+
+      // Get the length of the path that now extends to the
+      // bottom of this link, and store it in our linkEnds WeakMap.
+      linkEnds.set(link, path.getTotalLength());
+    });
+  }
+
+  drawPath();
+
+  // Create an IntersectionObserver to watch the sections of the
+  // article as they scroll in and out of view
+  addIntersectionObserver();
+
+  import { debounce } from "@utils/debounce";
+  const debouncedScrollActiveLinksIntoView = debounce(
+    scrollActiveLinksIntoView,
+  );
+
+  function addIntersectionObserver() {
+    const observer = new IntersectionObserver((sections) => {
+      sections.forEach((section) => {
+        const heading = section.target.querySelector("h1, h2, h3, h4, h5");
+        if (!heading) return;
+        const id = heading.getAttribute("id");
+
+        // Get the link to this section's heading
+        const link = document.querySelector(`nav.toc li a[href="#${id}"]`);
+        if (!link) return;
+
+        // Add/remove the .active class based on whether the
+        // section is visible
+        const addRemove = section.intersectionRatio > 0 ? "add" : "remove";
+        link.classList[addRemove]("active");
+      });
+      updatePath(); // We will write this next
+      debouncedScrollActiveLinksIntoView();
+    });
+
+    // Observe all the sections of the article
+    document.querySelectorAll("article section").forEach((section) => {
+      observer.observe(section);
+    });
+  }
+
+  // TODO: avoid using DOM queries for this
+  function updatePath() {
+    const path = document.querySelector("path.toc-marker") as SVGPathElement;
+    const pathLength = path.getTotalLength();
+    const activeLinks = document.querySelectorAll("nav.toc a.active");
+    let linkStart = pathLength;
+    let linkEnd = 0;
+    activeLinks.forEach((link) => {
+      // Set linkStart to the top of the earliest active link
+      linkStart = Math.min(linkStart, linkStarts.get(link));
+      // Set linkEnd to the bottom of the furthest active link
+      linkEnd = Math.max(linkEnd, linkEnds.get(link));
+    });
+    // If there are no active links, hide the path
+    path.style.display = activeLinks.length ? "inline" : "none";
+    // FINALLY, do the thing!
+    path.setAttribute(
+      "stroke-dasharray",
+      `1 ${linkStart} ${linkEnd - linkStart} ${pathLength}`,
+    );
+  }
+
+  let lastActiveCenter: number | null = null;
+
+  function scrollActiveLinksIntoView() {
+    const toc_container = document.querySelector(
+      ".toc-container",
+    ) as HTMLElement;
+    const activeLinks = toc_container.querySelectorAll(".active");
+
+    if (activeLinks.length > 0) {
+      const tocRect = toc_container.getBoundingClientRect();
+
+      let minTop = Infinity;
+      let maxBottom = -Infinity;
+
+      activeLinks.forEach((link) => {
+        const rect = link.getBoundingClientRect();
+        if (rect.top < minTop) minTop = rect.top;
+        if (rect.bottom > maxBottom) maxBottom = rect.bottom;
+      });
+
+      const activeCenter = (minTop + maxBottom) / 2;
+      const tocCenter = (tocRect.top + tocRect.bottom) / 2;
+      const offset = activeCenter - tocCenter;
+
+      // Only scroll if the center has changed significantly
+      if (lastActiveCenter === null || activeCenter !== lastActiveCenter) {
+        toc_container.scrollTo({
+          top: toc_container.scrollTop + offset,
+          behavior: "smooth",
+        });
+        lastActiveCenter = activeCenter;
+      }
+    }
+  }
+
+  addResizeObserver();
+
+  function addResizeObserver() {
+    const toc = document.querySelector("nav.toc") as HTMLElement;
+    if (!toc) return;
+    const observer = new ResizeObserver(() => {
+      drawPath();
+      updatePath();
+    });
+    observer.observe(toc);
+  }
+</script>

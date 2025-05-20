@@ -3,13 +3,14 @@ import mdx from "@astrojs/mdx"
 import sitemap from "@astrojs/sitemap"
 import tailwind from "@astrojs/tailwind"
 import solidJs from "@astrojs/solid-js"
+import sectionize from "remark-sectionize"
 
 import { transformerMetaHighlight } from '@shikijs/transformers';
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://astro-sphere-demo.vercel.app",
-  integrations: [mdx(), sitemap(), solidJs(), tailwind({ applyBaseStyles: false })],
+  integrations: [sitemap(), solidJs(), tailwind({ applyBaseStyles: false }), mdx()],
   markdown: {
     shikiConfig: {
       transformers: [{
@@ -20,11 +21,12 @@ export default defineConfig({
           hast.properties['data-code'] = JSON.stringify(this.source);
         },
       },
-    transformerMetaHighlight()],
+      transformerMetaHighlight()],
       themes: {
         light: "github-light",
         dark: "dark-plus",
       }
-    }
+    },
+    remarkPlugins: [sectionize],
   }
 });

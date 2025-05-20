@@ -1,0 +1,47 @@
+---
+type Heading = {
+  slug: string;
+  text: string;
+  children: Heading[];
+};
+
+type Props = {
+  heading: Heading;
+};
+
+const { heading } = Astro.props;
+---
+
+<li class="grid">
+  <a
+    class="items-center inline-flex hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white py-2 px-4"
+    href={"#" + heading.slug}
+  >
+    <div class="line-clamp-3">
+      {heading.text}
+    </div>
+  </a>
+  {
+    heading.children.length > 0 && (
+      <ul class="pl-8 grid">
+        {heading.children.map((child) => (
+          <Astro.self heading={child} />
+        ))}
+      </ul>
+    )
+  }
+</li>
+
+<style>
+  a {
+    opacity: 0.8;
+  }
+
+  a:hover {
+    opacity: 1;
+  }
+
+  .active {
+    opacity: 1;
+  }
+</style>
