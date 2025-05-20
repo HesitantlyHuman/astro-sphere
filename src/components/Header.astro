@@ -7,22 +7,14 @@ import Container from "@components/Container.astro";
 ---
 
 <header id="header" class="fixed top-0 w-full h-16 z-50">
-<<<<<<< HEAD
-  <Container size="md">
-=======
   <Container size="lg">
->>>>>>> feature/table-of-contents
     <div class="relative h-full w-full">
       <div
         class="absolute left-0 top-1/2 -translate-y-1/2 flex gap-1 font-semibold"
       >
         <a
           href="/"
-<<<<<<< HEAD
           class="flex gap-1 text-current hover:text-black dark:hover:text-white"
-=======
-          class="flex gap-1 text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
->>>>>>> feature/table-of-contents
         >
           <svg class="size-6 fill-current">
             <use href="/brand.svg#brand"></use>
@@ -42,16 +34,9 @@ import Container from "@components/Container.astro";
                 class={cn(
                   "h-8 rounded-full px-3 text-current",
                   "flex items-center justify-center",
-<<<<<<< HEAD
                   pathname === LINK.HREF || "/" + subpath?.[0] === LINK.HREF
                     ? "bg-black dark:bg-white text-white dark:text-black"
                     : "hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white",
-=======
-                  "transition-colors duration-300 ease-in-out",
-                  pathname === LINK.HREF || "/" + subpath?.[0] === LINK.HREF
-                    ? "bg-black dark:bg-white text-white dark:text-black"
-                    : "hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white"
->>>>>>> feature/table-of-contents
                 )}
               >
                 {LINK.TEXT}
@@ -71,16 +56,9 @@ import Container from "@components/Container.astro";
             "bg-transparent hover:bg-black/5 dark:hover:bg-white/20",
             "stroke-current hover:stroke-black hover:dark:stroke-white",
             "border border-black/10 dark:border-white/25",
-<<<<<<< HEAD
             pathname === "/search" || "/" + subpath?.[0] === "/search"
               ? "pointer-events-none bg-black dark:bg-white text-white dark:text-black"
               : "",
-=======
-            "transition-colors duration-300 ease-in-out",
-            pathname === "/search" || "/" + subpath?.[0] === "/search"
-              ? "pointer-events-none bg-black dark:bg-white text-white dark:text-black"
-              : ""
->>>>>>> feature/table-of-contents
           )}
         >
           <svg class="size-full">
@@ -98,10 +76,6 @@ import Container from "@components/Container.astro";
             "bg-transparent hover:bg-black/5 dark:hover:bg-white/20",
             "stroke-current hover:stroke-black hover:dark:stroke-white",
             "border border-black/10 dark:border-white/25",
-<<<<<<< HEAD
-=======
-            "transition-colors duration-300 ease-in-out"
->>>>>>> feature/table-of-contents
           )}
         >
           <svg class="size-full">
@@ -118,10 +92,6 @@ import Container from "@components/Container.astro";
             "bg-transparent hover:bg-black/5 dark:hover:bg-white/20",
             "stroke-current hover:stroke-black hover:dark:stroke-white",
             "border border-black/10 dark:border-white/25",
-<<<<<<< HEAD
-=======
-            "transition-colors duration-300 ease-in-out"
->>>>>>> feature/table-of-contents
           )}
         >
           <svg class="size-full block dark:hidden">
@@ -141,11 +111,7 @@ import Container from "@components/Container.astro";
             "bg-transparent hover:bg-black/5 dark:hover:bg-white/20",
             "stroke-current hover:stroke-black hover:dark:stroke-white",
             "border border-black/10 dark:border-white/25",
-<<<<<<< HEAD
             "transition-colors duration-300 ease-in-out",
-=======
-            "transition-colors duration-300 ease-in-out"
->>>>>>> feature/table-of-contents
           )}
         >
           <svg id="drawer-open" class="size-full">

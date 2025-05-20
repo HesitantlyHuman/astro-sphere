@@ -45,3 +45,13 @@ const next = items[(index + 1) % items.length];
   }
 </div>
 <PreviousNextButtons prev={prev} next={next} />
+
+<style>
+  :global(article > section:first-of-type > :first-child) {
+    margin-top: 0;
+  }
+
+  :global(article > section:last-of-type > :last-child) {
+    margin-bottom: 0;
+  }
+</style>
