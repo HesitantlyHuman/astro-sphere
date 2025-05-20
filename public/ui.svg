@@ -70,7 +70,7 @@
 
     <!-- arrow-right -->
     <symbol id="arrow-right" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-      <path d="M5 12h14"/>
+      <path d="M5 12h13"/>
       <path d="M12 5l7 7-7 7"/>
     </symbol>
 
@@ -112,6 +112,13 @@
       <path d="M 13 18 h 8"/>
       <path d="M 6 5 v 13"/>
       <path d="M 3 8 l 3 -3 l 3 3"/>
+    </symbol>
+
+    <!-- code -->
+    <symbol id="code" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+      <path d="M 6 7 l -5 5 l 5 5"/>
+      <path d="M 14 5 L 10 19"/>
+      <path d="M 18 7 l 5 5 l -5 5"/>
     </symbol>
   </defs>
 </svg>

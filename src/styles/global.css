@@ -73,7 +73,7 @@ article {
 }
 
 .blend {
-  @apply transition-all duration-300 ease-in-out;
+  @apply transition-transform duration-300 ease-in-out;
 }
 
 /** Light theme particles on home page */
@@ -91,7 +91,7 @@ article {
 .animate {
   opacity: 0;
   transform: translateY(50px);
-  transition: opacity 1s ease, transform 1s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .animate.show {

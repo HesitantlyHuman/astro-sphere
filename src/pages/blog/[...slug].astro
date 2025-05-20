@@ -18,6 +18,6 @@ const post = Astro.props;
 const { title, summary } = post.data;
 ---
 
-<PageLayout title={title} description={summary}>
+<PageLayout filePath={post.filePath} title={title} description={summary}>
 	<ArticleLayout entry={post} />
 </PageLayout>

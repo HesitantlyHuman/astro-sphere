@@ -42,7 +42,9 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
                 class="translate-x-1 group-hover:translate-x-0 transition-transform duration-300 ease-in-out"
             ></polyline>
         </svg>
-        <div class="w-full group-hover:text-black group-hover:dark:text-white">
+        <div
+            class="w-full group-hover:text-black group-hover:dark:text-white pt-[2px]"
+        >
             Back to {collection}
         </div>
     </a>
@@ -60,7 +62,7 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
             {readingTime(body)}
         </div>
     </div>
-    <h1 class="text-3xl font-semibold text-black dark:text-white mt-2">
+    <h1 class="text-3xl font-semibold text-black dark:text-white mt-4">
         {title}
     </h1>
     <div class="mt-1">

@@ -1,17 +1,45 @@
 ---
+type Props = {
+  filePath?: string;
+};
+
 import { SITE, SOCIALS } from "@consts";
 import Container from "@components/Container.astro";
+
+const { filePath } = Astro.props;
+
+const repo = import.meta.env.PUBLIC_GITHUB_REPO;
+const sourceURL = `${repo}/blob/main/${filePath}`;
 ---
 
 <footer class="relative bg-white dark:bg-black">
   <div class="animate">
     <section class="py-5">
       <Container size="6xl">
-        <div class="flex items-center justify-center sm:justify-end">
+        <div class="flex items-center justify-between">
+          {
+            filePath && (
+              <a
+                href={sourceURL}
+                target="_blank"
+                rel="noopener"
+                class="flex items-center w-fit py-1.5 px-2 text-sm gap-1.5 rounded border hover:bg-black/5 hover:dark:bg-white/10 border-black/10 dark:border-white/25 group"
+                aria-label="View source on GitHub"
+              >
+                <svg class="size-5 stroke-current group-hover:stroke-black group-hover:dark:stroke-white">
+                  <use href={`${import.meta.env.BASE_URL}/ui.svg#code`} />
+                </svg>
+                <span class="group-hover:text-black group-hover:dark:text-white pt-[2px]">
+                  View Source
+                </span>
+              </a>
+            )
+          }
+          {!filePath && <div />}
           <button
             id="back-to-top"
             aria-label="Back to top of page"
-            class="group flex w-fit p-1.5 gap-1.5 text-sm items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20"
+            class="group flex w-fit p-1.5 px-2 gap-1.5 text-sm items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +65,7 @@ import Container from "@components/Container.astro";
               ></polyline>
             </svg>
             <div
-              class="w-full group-hover:text-black group-hover:dark:text-white"
+              class="w-full group-hover:text-black group-hover:dark:text-white pt-[2px]"
             >
               Back to top
             </div>
@@ -51,10 +79,10 @@ import Container from "@components/Container.astro";
     >
       <Container size="6xl">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="flex flex-col items-center sm:items-start">
+          <div class="flex h-full flex-col items-center sm:items-start">
             <a
               href=`${import.meta.env.BASE_URL}/`
-              class="flex gap-1 w-fit font-semibold text-current hover:text-black dark:hover:text-white"
+              class="flex gap-1 w-fit h-full font-semibold text-current hover:text-black dark:hover:text-white pt-1"
             >
               <svg class="size-6 fill-current">
                 <use href=`${import.meta.env.BASE_URL}/brand.svg#brand`></use>
