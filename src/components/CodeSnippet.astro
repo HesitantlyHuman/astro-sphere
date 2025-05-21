@@ -240,6 +240,7 @@ const header = copy || caption || link;
 </style>
 
 <script define:vars={{ copy_ui_id, code_text }}>
+  if (!copy_ui_id) return;
   const copiedIconDuration = 850; // Change this to customize the display duration (in milliseconds)
 
   const copy_ui = document.getElementById(copy_ui_id);
