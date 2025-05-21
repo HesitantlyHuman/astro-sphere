@@ -46,7 +46,7 @@ body {
 }
 
 main {
-  @apply bg-white dark:bg-black;
+  @apply flex flex-col flex-1 bg-white dark:bg-black;
 }
 
 header {
