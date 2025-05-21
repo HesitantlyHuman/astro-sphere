@@ -108,13 +108,43 @@ function collect_headings(
 </div>
 
 <script>
-  const toc_container = document.querySelector(".toc-container") as HTMLElement;
-  const fadeTop = document.getElementById("toc-fade-top");
-  const fadeBottom = document.getElementById("toc-fade-bottom");
+  var tocContainer: HTMLElement;
+  var tocPath: SVGPathElement;
+  var activeLinks: NodeListOf<Element>;
+  var fadeTop: HTMLElement;
+  var fadeBottom: HTMLElement;
+  var lastActiveCenter: number | null;
+  var linkStarts: WeakMap<Element, number>;
+  var linkEnds: WeakMap<Element, number>;
+
+  import { debounce } from "@utils/debounce";
+  const debouncedScrollActiveLinksIntoView = debounce(
+    scrollActiveLinksIntoView,
+  );
+
+  function initializeTOC() {
+    tocContainer = document.querySelector(".toc-container") as HTMLElement;
+    if (!tocContainer) return;
+    tocPath = tocContainer.querySelector(".toc-marker") as SVGPathElement;
+    fadeTop = document.getElementById("toc-fade-top") as HTMLElement;
+    fadeBottom = document.getElementById("toc-fade-bottom") as HTMLElement;
+    lastActiveCenter = null;
+
+    // Create some WeakMaps to store the distances to the top and
+    // bottom of each link
+    linkStarts = new WeakMap();
+    linkEnds = new WeakMap();
+
+    drawPath();
+    addIntersectionObserver();
+    addResizeObserver();
+    updateFades();
+
+    tocContainer.addEventListener("scroll", updateFades);
+  }
 
   function updateFades() {
-    if (toc_container === null) return;
-    const { scrollTop, scrollHeight, clientHeight } = toc_container;
+    const { scrollTop, scrollHeight, clientHeight } = tocContainer;
 
     // Show top fade if scrolled down past the top
     if (fadeTop !== null) {
@@ -134,16 +164,6 @@ function collect_headings(
       }
     }
   }
-
-  // Initialize on load and update on scroll
-  window.addEventListener("load", updateFades);
-  if (toc_container !== null)
-    toc_container.addEventListener("scroll", updateFades);
-
-  // Create some WeakMaps to store the distances to the top and
-  // bottom of each link
-  const linkStarts = new WeakMap();
-  const linkEnds = new WeakMap();
 
   function drawPath() {
     const path = document.querySelector(
@@ -190,17 +210,6 @@ function collect_headings(
     });
   }
 
-  drawPath();
-
-  // Create an IntersectionObserver to watch the sections of the
-  // article as they scroll in and out of view
-  addIntersectionObserver();
-
-  import { debounce } from "@utils/debounce";
-  const debouncedScrollActiveLinksIntoView = debounce(
-    scrollActiveLinksIntoView,
-  );
-
   function addIntersectionObserver() {
     const observer = new IntersectionObserver((sections) => {
       sections.forEach((section) => {
@@ -217,7 +226,8 @@ function collect_headings(
         const addRemove = section.intersectionRatio > 0 ? "add" : "remove";
         link.classList[addRemove]("active");
       });
-      updatePath(); // We will write this next
+      updateActiveLinks();
+      updatePath();
       debouncedScrollActiveLinksIntoView();
     });
 
@@ -227,38 +237,36 @@ function collect_headings(
     });
   }
 
-  // TODO: avoid using DOM queries for this
+  function updateActiveLinks() {
+    if (!tocContainer) return;
+    activeLinks = document.querySelectorAll("nav.toc a.active");
+  }
+
   function updatePath() {
-    const path = document.querySelector("path.toc-marker") as SVGPathElement;
-    const pathLength = path.getTotalLength();
-    const activeLinks = document.querySelectorAll("nav.toc a.active");
+    if (!tocContainer) return;
+    const pathLength = tocPath.getTotalLength();
+
     let linkStart = pathLength;
     let linkEnd = 0;
     activeLinks.forEach((link) => {
       // Set linkStart to the top of the earliest active link
-      linkStart = Math.min(linkStart, linkStarts.get(link));
+      linkStart = Math.min(linkStart, linkStarts.get(link) ?? Infinity);
       // Set linkEnd to the bottom of the furthest active link
-      linkEnd = Math.max(linkEnd, linkEnds.get(link));
+      linkEnd = Math.max(linkEnd, linkEnds.get(link) ?? 0);
     });
     // If there are no active links, hide the path
-    path.style.display = activeLinks.length ? "inline" : "none";
+    tocPath.style.display = activeLinks.length ? "inline" : "none";
     // FINALLY, do the thing!
-    path.setAttribute(
+    tocPath.setAttribute(
       "stroke-dasharray",
       `1 ${linkStart} ${linkEnd - linkStart} ${pathLength}`,
     );
   }
 
-  let lastActiveCenter: number | null = null;
-
   function scrollActiveLinksIntoView() {
-    const toc_container = document.querySelector(
-      ".toc-container",
-    ) as HTMLElement;
-    const activeLinks = toc_container.querySelectorAll(".active");
-
+    if (!tocContainer) return;
     if (activeLinks.length > 0) {
-      const tocRect = toc_container.getBoundingClientRect();
+      const tocRect = tocContainer.getBoundingClientRect();
 
       let minTop = Infinity;
       let maxBottom = -Infinity;
@@ -275,8 +283,8 @@ function collect_headings(
 
       // Only scroll if the center has changed significantly
       if (lastActiveCenter === null || activeCenter !== lastActiveCenter) {
-        toc_container.scrollTo({
-          top: toc_container.scrollTop + offset,
+        tocContainer.scrollTo({
+          top: tocContainer.scrollTop + offset,
           behavior: "smooth",
         });
         lastActiveCenter = activeCenter;
@@ -284,15 +292,16 @@ function collect_headings(
     }
   }
 
-  addResizeObserver();
-
   function addResizeObserver() {
     const toc = document.querySelector("nav.toc") as HTMLElement;
     if (!toc) return;
     const observer = new ResizeObserver(() => {
       drawPath();
+      updateActiveLinks();
       updatePath();
     });
     observer.observe(toc);
   }
+
+  document.addEventListener("astro:page-load", initializeTOC);
 </script>

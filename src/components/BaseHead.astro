@@ -1,4 +1,6 @@
 ---
+import { ClientRouter } from "astro:transitions";
+
 interface Props {
   title: string;
   description: string;
@@ -80,6 +82,8 @@ const { title, description, image = "/open-graph.jpg" } = Astro.props;
 <script is:inline src=`${import.meta.env.BASE_URL}/js/theme.js`></script>
 <script is:inline src=`${import.meta.env.BASE_URL}/js/scroll.js` defer></script>
 <script is:inline src=`${import.meta.env.BASE_URL}/js/animate.js`></script>
+
+<ClientRouter />
 
 <script>
   import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
