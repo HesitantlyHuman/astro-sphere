@@ -67,7 +67,7 @@ function parseBool(value: string) {
 }
 
 const copy = parseBool(meta.copy);
-const copy_button_id = $id("copy-button");
+const copy_ui_id = copy ? $id("copy-button") : undefined;
 
 // Somewhere along the line, the properties are getting encoded in a way which
 // does not preserve whitespace. See astro.config.mjs
@@ -116,26 +116,39 @@ const header = copy || caption || link;
         {!caption && !link && <div />}
 
         {copy && (
-          <button
-            class="copy-button h-full flex items-center justify-center p-2 px-4
+          <div class="flex flex-row items-center gap-1" id={copy_ui_id}>
+            <span class="copied-dialog hidden relative rounded-md bg-green-600 dark:bg-green-700 py-0 px-2 text-white mr-[-8px]">
+              Copied
+              <span class="w-1.5 h-1.5 bg-green-600 dark:bg-green-700 rotate-45 absolute left-full top-1/2 -translate-y-1/2 ml-[-3px]" />
+            </span>
+            <span class="copy-dialog hidden relative rounded-md bg-neutral-400 dark:bg-neutral-600 py-0 px-2 text-white mr-[-8px]">
+              Copy
+              <span class="w-1.5 h-1.5 bg-neutral-400 dark:bg-neutral-600 rotate-45 absolute left-full top-1/2 -translate-y-1/2 ml-[-3px]" />
+            </span>
+            <button
+              class="copy-button h-full flex items-center justify-center p-2 px-4
           fill-black/60 dark:fill-white/60
           hover:fill-black/80 hover:dark:fill-white/80
           copied:fill-black/80 copied:dark:fill-white/80"
-            id={copy_button_id}
-            aria-label="copy"
-          >
-            <>
-              <svg class="copy-svg copy-svg-active size-3.5 aspect-square">
-                <use href={`${import.meta.env.BASE_URL}/ui.svg#copy-filled`} />
-              </svg>
-              <svg class="copy-svg copy-svg-inactive size-3.5 aspect-square">
-                <use href={`${import.meta.env.BASE_URL}/ui.svg#copy-open`} />
-              </svg>
-              <svg class="copy-svg copy-svg-copied size-3.5 aspect-square fill-green-600 dark:fill-green-500">
-                <use href={`${import.meta.env.BASE_URL}/ui.svg#square-check`} />
-              </svg>
-            </>
-          </button>
+              aria-label="copy"
+            >
+              <>
+                <svg class="copy-svg copy-svg-active size-3.5 aspect-square">
+                  <use
+                    href={`${import.meta.env.BASE_URL}/ui.svg#copy-filled`}
+                  />
+                </svg>
+                <svg class="copy-svg copy-svg-inactive size-3.5 aspect-square">
+                  <use href={`${import.meta.env.BASE_URL}/ui.svg#copy-open`} />
+                </svg>
+                <svg class="copy-svg copy-svg-copied size-3.5 aspect-square fill-green-600">
+                  <use
+                    href={`${import.meta.env.BASE_URL}/ui.svg#square-check`}
+                  />
+                </svg>
+              </>
+            </button>
+          </div>
         )}
       </figcaption>
     )
@@ -164,6 +177,10 @@ const header = copy || caption || link;
 
   .copy-svg-copied {
     display: none;
+  }
+
+  .copy-dialog:has(+ .copy-button:hover) {
+    display: block;
   }
 
   .astro-code {
@@ -217,16 +234,21 @@ const header = copy || caption || link;
   }
 
   :global(.astro-code code .line.highlighted::before) {
-    @apply bg-transparent dark:bg-neutral-800 border-l-2 border-blue-500;
+    background-color: oklch(95.03% 0.0017 247.84);
+    @apply dark:bg-neutral-800 border-l-2 border-blue-500;
   }
 </style>
 
-<script define:vars={{ copy_button_id, code_text }}>
-  const button = document.getElementById(copy_button_id);
-  const copiedIconDuration = 750; // Change this to customize the display duration (in milliseconds)
-  const activeIcon = button.querySelector(".copy-svg-active");
-  const inactiveIcon = button.querySelector(".copy-svg-inactive");
-  const copiedIcon = button.querySelector(".copy-svg-copied");
+<script define:vars={{ copy_ui_id, code_text }}>
+  const copiedIconDuration = 850; // Change this to customize the display duration (in milliseconds)
+
+  const copy_ui = document.getElementById(copy_ui_id);
+  const button = copy_ui.querySelector(".copy-button");
+  const activeIcon = copy_ui.querySelector(".copy-svg-active");
+  const inactiveIcon = copy_ui.querySelector(".copy-svg-inactive");
+  const copiedIcon = copy_ui.querySelector(".copy-svg-copied");
+  const copiedDialog = copy_ui.querySelector(".copied-dialog");
+  const copyDialog = copy_ui.querySelector(".copy-dialog");
 
   let is_active = false;
 
@@ -235,12 +257,16 @@ const header = copy || caption || link;
     activeIcon.style.display = "none";
     inactiveIcon.style.display = "none";
     copiedIcon.style.display = "block";
+    copiedDialog.style.display = "block";
+    copyDialog.style.display = "none";
 
     setTimeout(() => {
       // Reset icon visibility
       activeIcon.style.display = "";
       inactiveIcon.style.display = "";
       copiedIcon.style.display = "";
+      copiedDialog.style.display = "";
+      copyDialog.style.display = "";
     }, copiedIconDuration);
   };
 
