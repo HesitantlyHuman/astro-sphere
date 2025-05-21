@@ -157,6 +157,8 @@ const sourceURL = `${repo}/blob/main/${filePath}`;
 </footer>
 
 <script is:inline>
+  const backToTopButton = document.getElementById("back-to-top");
+
   function goBackToTop(event) {
     event.preventDefault();
     window.scrollTo({
@@ -165,11 +167,20 @@ const sourceURL = `${repo}/blob/main/${filePath}`;
     });
   }
 
-  function inintializeBackToTop() {
-    const backToTop = document.getElementById("back-to-top");
-    backToTop?.addEventListener("click", goBackToTop);
+  function handleScroll() {
+    if (window.scrollY === 0) {
+      backToTopButton.style.display = "none";
+    } else {
+      backToTopButton.style.display = "flex"; // or "block", depending on your layout
+    }
   }
 
-  document.addEventListener("astro:after-swap", inintializeBackToTop);
-  inintializeBackToTop();
+  function initializeBackToTop() {
+    backToTopButton.addEventListener("click", goBackToTop);
+    handleScroll(); // Set initial visibility
+    window.addEventListener("scroll", handleScroll);
+  }
+
+  document.addEventListener("astro:after-swap", initializeBackToTop);
+  initializeBackToTop();
 </script>
