@@ -6,7 +6,11 @@ const subpath = pathname.match(/[^/]+/g);
 import Container from "@components/Container.astro";
 ---
 
-<header id="header" class="fixed top-0 w-full h-16 z-50">
+<header
+  id="header"
+  class="fixed top-0 w-full h-16 z-50"
+  transition:persist="header"
+>
   <Container size="6xl">
     <div class="relative h-full w-full">
       <div
@@ -144,19 +148,41 @@ import Container from "@components/Container.astro";
   }
 </style>
 
-<script is:inline>
+<script>
+  let scrollY = 0;
+  var drawer: HTMLElement;
+  var drawerButton: HTMLElement;
+
   function toggleDrawer() {
-    const drawer = document.getElementById("drawer");
-    const drawerButton = document.getElementById("header-drawer-button");
-    drawer?.classList.toggle("open");
+    const isOpen = drawer?.classList.toggle("open");
     drawerButton?.classList.toggle("open");
+
+    if (isOpen) {
+      // Freeze scroll
+      scrollY = window.scrollY;
+      document.body.style.overflow = "hidden";
+      document.body.scrollTop = scrollY;
+    } else {
+      document.body.style.overflow = "";
+      window.scrollTo({
+        top: scrollY,
+        left: 0,
+        behavior: "instant",
+      });
+    }
   }
 
   function initializeDrawerButton() {
-    const drawerButton = document.getElementById("header-drawer-button");
+    drawer = document.getElementById("drawer") as HTMLElement;
+    if (!drawer) return;
+    drawerButton = document.getElementById(
+      "header-drawer-button",
+    ) as HTMLElement;
     drawerButton?.addEventListener("click", toggleDrawer);
+
+    drawer.classList.remove("open");
+    drawerButton.classList.remove("open");
   }
 
-  document.addEventListener("astro:after-swap", initializeDrawerButton);
-  initializeDrawerButton();
+  document.addEventListener("astro:page-load", initializeDrawerButton);
 </script>
