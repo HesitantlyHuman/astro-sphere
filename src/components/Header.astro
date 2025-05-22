@@ -6,11 +6,7 @@ const subpath = pathname.match(/[^/]+/g);
 import Container from "@components/Container.astro";
 ---
 
-<header
-  id="header"
-  class="fixed top-0 w-full h-16 z-50"
-  transition:persist="header"
->
+<header id="header" class="fixed top-0 w-full h-16 z-50">
   <Container size="6xl">
     <div class="relative h-full w-full">
       <div
@@ -152,6 +148,8 @@ import Container from "@components/Container.astro";
   let scrollY = 0;
   var drawer: HTMLElement;
   var drawerButton: HTMLElement;
+  var headerThemeButton: HTMLElement;
+  var drawerThemeButton: HTMLElement;
 
   function toggleDrawer() {
     const isOpen = drawer?.classList.toggle("open");
@@ -172,6 +170,36 @@ import Container from "@components/Container.astro";
     }
   }
 
+  function changeTheme() {
+    const element = document.documentElement;
+    const theme = element.classList.contains("dark") ? "light" : "dark";
+
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+           -webkit-transition: none !important;
+           -moz-transition: none !important;
+           -o-transition: none !important;
+           -ms-transition: none !important;
+           transition: none !important;
+        }`,
+      ),
+    );
+    document.head.appendChild(css);
+
+    if (theme === "dark") {
+      element.classList.add("dark");
+    } else {
+      element.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+    localStorage.theme = theme;
+  }
+
   function initializeDrawerButton() {
     drawer = document.getElementById("drawer") as HTMLElement;
     if (!drawer) return;
@@ -184,5 +212,17 @@ import Container from "@components/Container.astro";
     drawerButton.classList.remove("open");
   }
 
+  function initializeThemeButtons() {
+    headerThemeButton = document.getElementById(
+      "header-theme-button",
+    ) as HTMLElement;
+    drawerThemeButton = document.getElementById(
+      "drawer-theme-button",
+    ) as HTMLElement;
+    headerThemeButton?.addEventListener("click", changeTheme);
+    drawerThemeButton?.addEventListener("click", changeTheme);
+  }
+
   document.addEventListener("astro:page-load", initializeDrawerButton);
+  document.addEventListener("astro:page-load", initializeThemeButtons);
 </script>
