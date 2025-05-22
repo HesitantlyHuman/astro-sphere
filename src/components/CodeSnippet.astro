@@ -243,15 +243,47 @@ const header = copy || caption || link;
   if (!copy_ui_id) return;
   const copiedIconDuration = 850; // Change this to customize the display duration (in milliseconds)
 
-  const copy_ui = document.getElementById(copy_ui_id);
-  const button = copy_ui.querySelector(".copy-button");
-  const activeIcon = copy_ui.querySelector(".copy-svg-active");
-  const inactiveIcon = copy_ui.querySelector(".copy-svg-inactive");
-  const copiedIcon = copy_ui.querySelector(".copy-svg-copied");
-  const copiedDialog = copy_ui.querySelector(".copied-dialog");
-  const copyDialog = copy_ui.querySelector(".copy-dialog");
+  let isActive = false;
+  var copy_ui;
+  var button;
+  var activeIcon;
+  var inactiveIcon;
+  var copiedIcon;
+  var copiedDialog;
+  var copyDialog;
 
-  let is_active = false;
+  function initializeCopyButton() {
+    if (!copy_ui_id) return;
+    copy_ui = document.getElementById(copy_ui_id);
+    if (!copy_ui) return;
+    button = copy_ui.querySelector(".copy-button");
+    activeIcon = copy_ui.querySelector(".copy-svg-active");
+    inactiveIcon = copy_ui.querySelector(".copy-svg-inactive");
+    copiedIcon = copy_ui.querySelector(".copy-svg-copied");
+    copiedDialog = copy_ui.querySelector(".copied-dialog");
+    copyDialog = copy_ui.querySelector(".copy-dialog");
+    isActive = false;
+
+    button.addEventListener("mousedown", () => {
+      button.classList.add("active");
+      isActive = true;
+    });
+
+    button.addEventListener("mouseleave", () => {
+      button.classList.remove("active");
+      isActive = false;
+    });
+
+    button.addEventListener("mouseup", () => {
+      if (isActive) {
+        navigator.clipboard.writeText(code_text);
+        showCopiedIcon();
+      }
+
+      button.classList.remove("active");
+      isActive = false;
+    });
+  }
 
   const showCopiedIcon = () => {
     // Show copied icon
@@ -271,23 +303,5 @@ const header = copy || caption || link;
     }, copiedIconDuration);
   };
 
-  button.addEventListener("mousedown", () => {
-    button.classList.add("active");
-    is_active = true;
-  });
-
-  button.addEventListener("mouseleave", () => {
-    button.classList.remove("active");
-    is_active = false;
-  });
-
-  button.addEventListener("mouseup", () => {
-    if (is_active) {
-      navigator.clipboard.writeText(code_text);
-      showCopiedIcon();
-    }
-
-    button.classList.remove("active");
-    is_active = false;
-  });
+  document.addEventListener("astro:page-load", initializeCopyButton);
 </script>
