@@ -1,6 +1,9 @@
 ---
 import { SITE, LINKS } from "@consts";
 import { cn } from "@lib/utils";
+
+import ThemeIcon from "@components/ThemeIcon.astro";
+
 const { pathname } = Astro.url;
 const subpath = pathname.match(/[^/]+/g);
 ---
@@ -56,18 +59,7 @@ const subpath = pathname.match(/[^/]+/g);
       </svg>
     </a>
 
-    <button
-      id="drawer-theme-button"
-      aria-label={`Toggle light and dark theme`}
-      class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25"
-    >
-      <svg class="block dark:hidden size-full">
-        <use href=`${import.meta.env.BASE_URL}/ui.svg#sun`></use>
-      </svg>
-      <svg class="hidden dark:block size-full">
-        <use href=`${import.meta.env.BASE_URL}/ui.svg#moon`></use>
-      </svg>
-    </button>
+    <ThemeIcon />
   </div>
 </div>
 

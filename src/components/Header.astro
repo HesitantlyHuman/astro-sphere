@@ -1,9 +1,26 @@
 ---
 import { SITE, LINKS } from "@consts";
 import { cn } from "@lib/utils";
-const { pathname } = Astro.url;
-const subpath = pathname.match(/[^/]+/g);
+
 import Container from "@components/Container.astro";
+import ThemeIcon from "@components/ThemeIcon.astro";
+
+const { pathname } = Astro.url;
+const pageURL = pathname.endsWith("/") ? pathname : pathname + "/";
+
+const prefixedLinks = LINKS.map((link) => {
+  return {
+    TEXT: link.TEXT,
+    HREF: import.meta.env.BASE_URL + link.HREF,
+  };
+});
+
+function isMatch(linkRef: string, pageURL: string): boolean {
+  if (!pageURL.startsWith(linkRef)) return false;
+
+  const nextChar = pageURL.charAt(linkRef.length);
+  return nextChar === "" || nextChar === "/";
+}
 ---
 
 <header id="header" class="fixed top-0 w-full h-16 z-50">
@@ -28,14 +45,13 @@ import Container from "@components/Container.astro";
       <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <nav class="hidden md:flex items-center justify-center text-sm gap-1">
           {
-            LINKS.map((LINK) => (
+            prefixedLinks.map((LINK) => (
               <a
-                href={`${import.meta.env.BASE_URL}${LINK.HREF}`}
+                href={LINK.HREF}
                 class={cn(
                   "h-8 rounded-full px-3 text-current",
                   "flex items-center justify-center",
-                  "/" + subpath?.[0] === LINK.HREF ||
-                    "/" + subpath?.[1] === LINK.HREF
+                  isMatch(LINK.HREF, pageURL)
                     ? "bg-black dark:bg-white text-white dark:text-black"
                     : "hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white",
                 )}
@@ -57,7 +73,7 @@ import Container from "@components/Container.astro";
             "bg-transparent hover:bg-black/5 dark:hover:bg-white/20",
             "stroke-current hover:stroke-black hover:dark:stroke-white",
             "border border-black/10 dark:border-white/25",
-            subpath?.[0] === "search" || subpath?.[1] === "search"
+            isMatch(`${import.meta.env.BASE_URL}/search`, pageURL)
               ? "pointer-events-none bg-black dark:bg-white text-white dark:text-black"
               : "",
           )}
@@ -84,24 +100,7 @@ import Container from "@components/Container.astro";
           </svg>
         </a>
 
-        <button
-          id="header-theme-button"
-          aria-label={`Toggle light and dark theme`}
-          class={cn(
-            "hidden md:flex",
-            "size-9 rounded-full p-2 items-center justify-center",
-            "bg-transparent hover:bg-black/5 dark:hover:bg-white/20",
-            "stroke-current hover:stroke-black hover:dark:stroke-white",
-            "border border-black/10 dark:border-white/25",
-          )}
-        >
-          <svg class="size-full block dark:hidden">
-            <use href=`${import.meta.env.BASE_URL}/ui.svg#sun`></use>
-          </svg>
-          <svg class="size-full hidden dark:block">
-            <use href=`${import.meta.env.BASE_URL}/ui.svg#moon`></use>
-          </svg>
-        </button>
+        <ThemeIcon collapsible="t" />
 
         <button
           id="header-drawer-button"
@@ -148,8 +147,6 @@ import Container from "@components/Container.astro";
   let scrollY = 0;
   var drawer: HTMLElement;
   var drawerButton: HTMLElement;
-  var headerThemeButton: HTMLElement;
-  var drawerThemeButton: HTMLElement;
 
   function toggleDrawer() {
     const isOpen = drawer?.classList.toggle("open");
@@ -170,36 +167,6 @@ import Container from "@components/Container.astro";
     }
   }
 
-  function changeTheme() {
-    const element = document.documentElement;
-    const theme = element.classList.contains("dark") ? "light" : "dark";
-
-    const css = document.createElement("style");
-
-    css.appendChild(
-      document.createTextNode(
-        `* {
-           -webkit-transition: none !important;
-           -moz-transition: none !important;
-           -o-transition: none !important;
-           -ms-transition: none !important;
-           transition: none !important;
-        }`,
-      ),
-    );
-    document.head.appendChild(css);
-
-    if (theme === "dark") {
-      element.classList.add("dark");
-    } else {
-      element.classList.remove("dark");
-    }
-
-    window.getComputedStyle(css).opacity;
-    document.head.removeChild(css);
-    localStorage.theme = theme;
-  }
-
   function initializeDrawerButton() {
     drawer = document.getElementById("drawer") as HTMLElement;
     if (!drawer) return;
@@ -212,17 +179,6 @@ import Container from "@components/Container.astro";
     drawerButton.classList.remove("open");
   }
 
-  function initializeThemeButtons() {
-    headerThemeButton = document.getElementById(
-      "header-theme-button",
-    ) as HTMLElement;
-    drawerThemeButton = document.getElementById(
-      "drawer-theme-button",
-    ) as HTMLElement;
-    headerThemeButton?.addEventListener("click", changeTheme);
-    drawerThemeButton?.addEventListener("click", changeTheme);
-  }
-
+  initializeDrawerButton();
   document.addEventListener("astro:page-load", initializeDrawerButton);
-  document.addEventListener("astro:page-load", initializeThemeButtons);
 </script>
