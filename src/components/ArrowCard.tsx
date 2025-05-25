@@ -20,11 +20,11 @@ export default function ArrowCard({ entry, pill }: Props) {
             {formatDate(entry.data.date)}
           </div>
         </div>
-        <div class="font-semibold mt-3 text-black dark:text-white line-clamp-2">
+        <div class="font-semibold mt-3 text-black dark:text-white line-clamp-2 text-ellipsis">
           {entry.data.title}
         </div>
 
-        <div class="text-sm line-clamp-2">
+        <div class="text-sm line-clamp-2 text-ellipsis">
           {entry.data.summary}
         </div>
         <ul class="flex flex-wrap mt-2 gap-1">

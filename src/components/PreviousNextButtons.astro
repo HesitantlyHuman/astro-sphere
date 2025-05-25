@@ -13,7 +13,9 @@ const { prev, next } = Astro.props;
             <div class="flex flex-wrap gap-2">
                 <div class="text-sm uppercase">Prev</div>
             </div>
-            <div class="font-semibold mt-3 text-black dark:text-white">
+            <div
+                class="font-semibold mt-3 text-black dark:text-white line-clamp-2 text-ellipsis"
+            >
                 {prev.data.title}
             </div>
         </div>
@@ -49,7 +51,9 @@ const { prev, next } = Astro.props;
             class="w-full h-full text-right group-hover:text-black group-hover:dark:text-white"
         >
             <div class="text-sm uppercase">Next</div>
-            <div class="font-semibold mt-3 text-black dark:text-white">
+            <div
+                class="font-semibold mt-3 text-black dark:text-white line-clamp-2 text-ellipsis"
+            >
                 {next.data.title}
             </div>
         </div>
