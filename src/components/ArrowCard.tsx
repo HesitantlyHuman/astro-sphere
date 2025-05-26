@@ -1,6 +1,8 @@
 import { formatDate, truncateText } from "@lib/utils"
 import type { CollectionEntry } from "astro:content"
 
+import { getURL } from "@utils/url";
+
 type Props = {
   entry: CollectionEntry<"blog"> | CollectionEntry<"projects">
   pill?: boolean
@@ -8,7 +10,7 @@ type Props = {
 
 export default function ArrowCard({ entry, pill }: Props) {
   return (
-    <a href={`${import.meta.env.BASE_URL}/${entry.collection}/${entry.slug}`} class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20">
+    <a href={getURL(`${entry.collection}/${entry.slug}`)} class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20">
       <div class="w-full group-hover:text-black group-hover:dark:text-white blend">
         <div class="flex flex-wrap items-center gap-2">
           {pill &&

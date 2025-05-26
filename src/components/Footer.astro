@@ -6,6 +6,8 @@ type Props = {
 import { SITE, SOCIALS } from "@consts";
 import Container from "@components/Container.astro";
 
+import { getURL } from "@utils/url";
+
 const { filePath } = Astro.props;
 
 const repo = import.meta.env.PUBLIC_GITHUB_REPO;
@@ -27,7 +29,7 @@ const sourceURL = `${repo}/blob/main/${filePath}`;
                 aria-label="View source on GitHub"
               >
                 <svg class="size-5 stroke-current group-hover:stroke-black group-hover:dark:stroke-white">
-                  <use href={`${import.meta.env.BASE_URL}/ui.svg#code`} />
+                  <use href={getURL("ui.svg#code")} />
                 </svg>
                 <span class="group-hover:text-black group-hover:dark:text-white pt-[2px]">
                   View Source
@@ -85,7 +87,7 @@ const sourceURL = `${repo}/blob/main/${filePath}`;
               class="flex gap-1 w-fit h-full font-semibold text-current hover:text-black dark:hover:text-white pt-1"
             >
               <svg class="size-6 fill-current">
-                <use href=`${import.meta.env.BASE_URL}/brand.svg#brand`></use>
+                <use href={getURL("brand.svg#brand")}></use>
               </svg>
               {SITE.TITLE}
             </a>
@@ -141,9 +143,7 @@ const sourceURL = `${repo}/blob/main/${filePath}`;
                     class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 "
                   >
                     <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white">
-                      <use
-                        href={`${import.meta.env.BASE_URL}/social.svg#${SOCIAL.ICON}`}
-                      />
+                      <use href={getURL(`social.svg#${SOCIAL.ICON}`)} />
                     </svg>
                   </a>
                 ))
