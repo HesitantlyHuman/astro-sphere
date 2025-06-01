@@ -11,8 +11,6 @@ const { pathname } = Astro.url;
 const pageURL = pathname.endsWith("/") ? pathname : pathname + "/";
 
 function isMatch(linkRef: string, pageURL: string): boolean {
-  console.log(linkRef);
-  console.log(pageURL);
   if (!pageURL.startsWith(linkRef)) return false;
 
   const nextChar = pageURL.charAt(linkRef.length);
@@ -27,7 +25,7 @@ function isMatch(linkRef: string, pageURL: string): boolean {
         class="absolute left-0 top-1/2 -translate-y-1/2 flex gap-1 font-semibold"
       >
         <a
-          href=`${import.meta.env.BASE_URL}/`
+          href={getURL("/")}
           class="flex gap-1 text-current hover:text-black dark:hover:text-white"
         >
           <svg class="size-6 fill-current">
@@ -48,7 +46,7 @@ function isMatch(linkRef: string, pageURL: string): boolean {
                 class={cn(
                   "h-8 rounded-full px-3 text-current",
                   "flex items-center justify-center",
-                  isMatch(LINK.HREF, pageURL)
+                  isMatch(getURL(LINK.HREF), pageURL)
                     ? "bg-black dark:bg-white text-white dark:text-black"
                     : "hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white",
                 )}
@@ -62,7 +60,7 @@ function isMatch(linkRef: string, pageURL: string): boolean {
 
       <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1">
         <a
-          href=`${import.meta.env.BASE_URL}/search`
+          href={getURL("/search")}
           aria-label={`Search blog posts and projects on ${SITE.TITLE}`}
           class={cn(
             "hidden md:flex",
@@ -70,7 +68,7 @@ function isMatch(linkRef: string, pageURL: string): boolean {
             "bg-transparent hover:bg-black/5 dark:hover:bg-white/20",
             "stroke-current hover:stroke-black hover:dark:stroke-white",
             "border border-black/10 dark:border-white/25",
-            isMatch(`${import.meta.env.BASE_URL}/search`, pageURL)
+            isMatch(getURL("/search"), pageURL)
               ? "pointer-events-none bg-black dark:bg-white text-white dark:text-black"
               : "",
           )}
@@ -81,7 +79,7 @@ function isMatch(linkRef: string, pageURL: string): boolean {
         </a>
 
         <a
-          href=`${import.meta.env.BASE_URL}/rss.xml`
+          href={getURL("rss.xml")}
           target="_blank"
           aria-label={`Rss feed for ${SITE.TITLE}`}
           class={cn(
@@ -93,7 +91,7 @@ function isMatch(linkRef: string, pageURL: string): boolean {
           )}
         >
           <svg class="size-full">
-            <use href=`${import.meta.env.BASE_URL}/ui.svg#rss`></use>
+            <use href={getURL("ui.svg#rss")}></use>
           </svg>
         </a>
 
@@ -111,10 +109,10 @@ function isMatch(linkRef: string, pageURL: string): boolean {
           )}
         >
           <svg id="drawer-open" class="size-full">
-            <use href=`${import.meta.env.BASE_URL}/ui.svg#menu`></use>
+            <use href={getURL("ui.svg#menu")}></use>
           </svg>
           <svg id="drawer-close" class="size-full">
-            <use href=`${import.meta.env.BASE_URL}/ui.svg#x`></use>
+            <use href={getURL("ui.svg#x")}></use>
           </svg>
         </button>
       </div>

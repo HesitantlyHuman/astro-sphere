@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { formatDate, readingTime } from "@lib/utils";
+import { getURL } from "@utils/url";
 
 type Props = {
     entry: CollectionEntry<"projects"> | CollectionEntry<"blog">;
@@ -16,7 +17,7 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
 
 <div>
     <a
-        href={`${import.meta.env.BASE_URL}/${collection}`}
+        href={getURL(`/${collection}`)}
         class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20"
     >
         <svg
@@ -51,13 +52,13 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
     <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75">
         <div class="flex items-center gap-2">
             <svg class="size-5 stroke-current">
-                <use href=`${import.meta.env.BASE_URL}/ui.svg#calendar`></use>
+                <use href={getURL("ui.svg#calendar")}></use>
             </svg>
             {formatDate(date)}
         </div>
         <div class="flex items-center gap-2">
             <svg class="size-5 stroke-current">
-                <use href=`${import.meta.env.BASE_URL}/ui.svg#book-open`></use>
+                <use href={getURL("ui.svg#book-open")}></use>
             </svg>
             {readingTime(body)}
         </div>
@@ -79,7 +80,7 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
                     >
                         <svg class="size-4">
                             <use
-                                href={`${import.meta.env.BASE_URL}/ui.svg#globe`}
+                                href={getURL("ui.svg#globe")}
                                 class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"
                             />
                         </svg>
@@ -96,7 +97,7 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
                     >
                         <svg class="size-4">
                             <use
-                                href={`${import.meta.env.BASE_URL}/ui.svg#link`}
+                                href={getURL("ui.svg#link")}
                                 class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"
                             />
                         </svg>

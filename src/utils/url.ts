@@ -1,17 +1,8 @@
+export function getURL(url: string): string {
+    const base = import.meta.env.BASE_URL;
 
-var hasBase = import.meta.env.BASE_URL != "/";
+    // Ensure exactly one leading slash, and no trailing slash
+    url = '/' + url.replace(/^\/+/, '').replace(/\/+$/, '');
 
-export function getURL(URL: string) {
-    if (URL.endsWith('/')) {
-        URL = URL.slice(0, -1);
-    }
-    if (hasBase) {
-        if (URL.startsWith('/') || URL.length == 0) {
-            return `${import.meta.env.BASE_URL}${URL}`;
-        } else {
-            return `${import.meta.env.BASE_URL}/${URL}`;
-        }
-    } else {
-        return URL;
-    }
+    return base !== '/' ? `${base}${url}` : url;
 }
