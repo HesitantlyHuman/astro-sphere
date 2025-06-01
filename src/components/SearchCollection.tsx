@@ -4,6 +4,13 @@ import Fuse from "fuse.js"
 import ArrowCard from "@components/ArrowCard"
 import { cn } from "@lib/utils"
 import SearchBar from "@components/SearchBar"
+import { getURL } from "@utils/url";
+
+const xIconRef = getURL('ui.svg#x')
+const checkIconRef = getURL('ui.svg#square-check')
+const squareIconRef = getURL('ui.svg#square')
+const descendingRef = getURL('ui.svg#sort-descending')
+const ascendingRef = getURL('ui.svg#sort-ascending')
 
 type Props = {
   entry_name: string
@@ -84,7 +91,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
                 class="absolute flex justify-center items-center h-full w-10 right-0 top-0 stroke-neutral-400 dark:stroke-neutral-500 hover:stroke-neutral-600 hover:dark:stroke-neutral-300"
               >
                 <svg class="size-5">
-                  <use href={`${import.meta.env.BASE_URL}/ui.svg#x`} />
+                  <use href={xIconRef} />
                 </svg>
               </button>
             )}</div>
@@ -110,11 +117,11 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
                       )}
                     >
                       <use
-                        href={`${import.meta.env.BASE_URL}/ui.svg#square`}
+                        href={squareIconRef}
                         class={cn(!filter().has(tag) ? "block" : "hidden")}
                       />
                       <use
-                        href={`${import.meta.env.BASE_URL}/ui.svg#square-check`}
+                        href={checkIconRef}
                         class={cn(filter().has(tag) ? "block" : "hidden")}
                       />
                     </svg>
@@ -145,8 +152,8 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
               <svg
                 class="size-5 left-2 top-[0.45rem]"
               >
-                <use href={`${import.meta.env.BASE_URL}/ui.svg#sort-descending`} class={descending() ? "block" : "hidden"}></use>
-                <use href={`${import.meta.env.BASE_URL}/ui.svg#sort-ascending`} class={descending() ? "hidden" : "block"}></use>
+                <use href={descendingRef} class={descending() ? "block" : "hidden"}></use>
+                <use href={ascendingRef} class={descending() ? "hidden" : "block"}></use>
               </svg>
             </button>
           </div>

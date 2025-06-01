@@ -1,6 +1,8 @@
 ---
 import { ClientRouter } from "astro:transitions";
 
+import { getURL } from "@utils/url";
+
 interface Props {
   title: string;
   description: string;
@@ -10,32 +12,50 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = "/open-graph.jpg" } = Astro.props;
+
+const fontRegular = getURL("/fonts/atkinson-regular.woff");
+const fontBold = getURL("/fonts/atkinson-bold.woff");
+const fontFace = `
+  @font-face {
+    font-family: "Atkinson";
+    src: url("${fontRegular}") format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Atkinson";
+    src: url("${fontBold}") format("woff");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+`;
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link
-  rel="icon"
-  type="image/svg+xml"
-  href=`${import.meta.env.BASE_URL}/favicon.svg`
-/>
+<link rel="icon" type="image/svg+xml" href={getURL("favicon.svg")} />
 <meta name="generator" content={Astro.generator} />
 
 <link
   rel="preload"
-  href="/astro-sphere/fonts/atkinson-regular.woff"
+  href={getURL("fonts/atkinson-regular.woff")}
   as="font"
   type="font/woff"
   crossorigin="anonymous"
 />
 <link
   rel="preload"
-  href="/astro-sphere/fonts/atkinson-bold.woff"
+  href={getURL("fonts/atkinson-bold.woff")}
   as="font"
   type="font/woff"
   crossorigin="anonymous"
 />
+
+<style is:global set:html={fontFace}></style>
 
 <!-- KaTeX -->
 <link
@@ -79,20 +99,9 @@ const { title, description, image = "/open-graph.jpg" } = Astro.props;
 />
 
 <!-- Global Scripts -->
-<!-- <script
-  is:inline
-  src=`${import.meta.env.BASE_URL}/js/theme.js`
-  transition:persist></script> -->
-
-<script
-  is:inline
-  src=`${import.meta.env.BASE_URL}/js/scroll.js`
-  defer
-  transition:persist></script>
-<script
-  is:inline
-  src=`${import.meta.env.BASE_URL}/js/animate.js`
-  transition:persist></script>
+<script is:inline src={getURL("js/scroll.js")} defer transition:persist
+></script>
+<script is:inline src={getURL("js/animate.js")} transition:persist></script>
 
 <script is:inline>
   function preloadTheme() {

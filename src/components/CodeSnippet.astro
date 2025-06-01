@@ -1,6 +1,8 @@
 ---
 const { $id } = Astro.locals;
 
+import { getURL } from "@utils/url";
+
 const meta: Record<string, string> = {};
 const {
   "data-meta": meta_string,
@@ -92,7 +94,7 @@ const header = copy || caption || link;
             rel="noopener noreferrer alternate"
           >
             <svg class="size-3.5">
-              <use href={`${import.meta.env.BASE_URL}/ui.svg#link`} />
+              <use href={getURL("ui.svg#link")} />
             </svg>
             <p class="m-0">{caption}</p>
           </a>
@@ -109,7 +111,7 @@ const header = copy || caption || link;
             rel="noopener noreferrer alternate"
           >
             <svg class="size-3.5">
-              <use href={`${import.meta.env.BASE_URL}/ui.svg#link`} />
+              <use href={getURL("ui.svg#link")} />
             </svg>
           </a>
         )}
@@ -134,17 +136,13 @@ const header = copy || caption || link;
             >
               <>
                 <svg class="copy-svg copy-svg-active size-3.5 aspect-square">
-                  <use
-                    href={`${import.meta.env.BASE_URL}/ui.svg#copy-filled`}
-                  />
+                  <use href={getURL("ui.svg#copy-filled")} />
                 </svg>
                 <svg class="copy-svg copy-svg-inactive size-3.5 aspect-square">
-                  <use href={`${import.meta.env.BASE_URL}/ui.svg#copy-open`} />
+                  <use href={getURL("ui.svg#copy-open")} />
                 </svg>
                 <svg class="copy-svg copy-svg-copied size-3.5 aspect-square fill-green-600">
-                  <use
-                    href={`${import.meta.env.BASE_URL}/ui.svg#square-check`}
-                  />
+                  <use href={getURL("ui.svg#square-check")} />
                 </svg>
               </>
             </button>

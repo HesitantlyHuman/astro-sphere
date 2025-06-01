@@ -1,10 +1,12 @@
 ---
+import { getURL } from "@utils/url";
+
 const { prev, next } = Astro.props;
 ---
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <a
-        href={`${import.meta.env.BASE_URL}/${prev.collection}/${prev.slug}`}
+        href={getURL(`/${prev.collection}/${prev.slug}`)}
         class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20"
     >
         <div
@@ -44,7 +46,7 @@ const { prev, next } = Astro.props;
         </svg>
     </a>
     <a
-        href={`${import.meta.env.BASE_URL}/${next.collection}/${next.slug}`}
+        href={getURL(`/${next.collection}/${next.slug}`)}
         class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20"
     >
         <div

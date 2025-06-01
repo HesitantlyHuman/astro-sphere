@@ -2,10 +2,26 @@
 import { SITE, LINKS } from "@consts";
 import { cn } from "@lib/utils";
 
+import { getURL } from "@utils/url";
+
 import ThemeIcon from "@components/ThemeIcon.astro";
 
 const { pathname } = Astro.url;
-const subpath = pathname.match(/[^/]+/g);
+const pageURL = pathname.endsWith("/") ? pathname : pathname + "/";
+
+const prefixedLinks = LINKS.map((link) => {
+  return {
+    TEXT: link.TEXT,
+    HREF: import.meta.env.BASE_URL + link.HREF,
+  };
+});
+
+function isMatch(linkRef: string, pageURL: string): boolean {
+  if (!pageURL.startsWith(linkRef)) return false;
+
+  const nextChar = pageURL.charAt(linkRef.length);
+  return nextChar === "" || nextChar === "/";
+}
 ---
 
 <div
@@ -14,14 +30,14 @@ const subpath = pathname.match(/[^/]+/g);
 >
   <nav class="flex flex-col items-center space-y-2">
     {
-      LINKS.map((LINK) => (
+      prefixedLinks.map((LINK) => (
         <a
-          href={`${import.meta.env.BASE_URL}${LINK.HREF}`}
+          href={getURL(LINK.HREF)}
           class={cn(
             "flex items-center justify-center px-3 py-1 rounded-full",
             "text-current hover:text-black dark:hover:text-white",
             "hover:bg-black/5 dark:hover:bg-white/20",
-            "/" + subpath?.[0] === LINK.HREF || "/" + subpath?.[1] === LINK.HREF
+            isMatch(LINK.HREF, pageURL)
               ? "pointer-events-none bg-black dark:bg-white text-white dark:text-black"
               : "",
           )}
@@ -38,13 +54,13 @@ const subpath = pathname.match(/[^/]+/g);
       aria-label={`Search blog posts and projects on ${SITE.TITLE}`}
       class={cn(
         "size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25",
-        subpath?.[0] === "search" || subpath?.[1] === "search"
+        isMatch(`${import.meta.env.BASE_URL}/search`, pageURL)
           ? "pointer-events-none bg-black dark:bg-white text-white dark:text-black"
           : "",
       )}
     >
       <svg class="size-full">
-        <use href=`${import.meta.env.BASE_URL}/ui.svg#search`></use>
+        <use href={getURL("ui.svg#search")}></use>
       </svg>
     </a>
 
@@ -55,7 +71,7 @@ const subpath = pathname.match(/[^/]+/g);
       class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25"
     >
       <svg class="size-full">
-        <use href=`${import.meta.env.BASE_URL}/ui.svg#rss`></use>
+        <use href={getURL("ui.svg#rss")}></use>
       </svg>
     </a>
 
